@@ -1,4 +1,5 @@
-# User simulation using ideas from computational rationality for an extremely simplified search task.
+# Simulating users in a simple search task
+We made a user simulation using ideas from computational rationality for an extremely simplified search task.
 The task of searching for an optimal web page can be formulated as a Partially Observable Markov Decision Process. That way, we can simulate the user behavior by using Reinforcement Learning to solve this POMDP and study the emergent behavior.
 
 ## Task
@@ -8,17 +9,17 @@ The value of the first web page is 50.
 Every subsequent webpage has some return sampled from the normal distribution centered at its parent's value with a standard deviation of 10.
 
 ## User limitation
-The user perceives the real return values of a page noisy.
-The users perception is limited in their cognitive ability.
+The user perceives the real return values of a page noisily.
+The users' perception is limited in their cognitive ability.
 The cognitive ability affects:
-- the initial noise level of the pages perception
-- the rate of decay of the noise (spending more time on a page lets them perceive the real value more clearly)
+- the initial noise level in the user's perception of a pages' value
+- the rate of decay of the noise (spending more time on a page lets the user perceive the real value more clearly)
 
 ## Observation, Action, Reward function
 At each timesteps the **observation** of the user is:
 - the current nodes' perceived value
 - the first childs' perceived value
-- the second chils' perceived value
+- the second childs' perceived value
 
 The **action** a user can perform is:
 - go back to the home page (root node)
@@ -31,6 +32,9 @@ The **action** a user can perform is:
 The **reward** given to the user is sparse.
 - they receive a penalty every timestep corresponding to their patience level
 - at the end of the episode (either if they choose to end the search or if they maximum amount of steps is reached) they get the true value of the current page as a reward
+
+
+## Instructions for running the code
 
 ### Installation
 First install python3 and pip. Tested on Python 3.12.3 and pip 24.0
