@@ -98,7 +98,7 @@ def train_and_test():
     obs = eval_env.reset()
     for _ in range(1000):
         action, _states = model.predict(obs)
-        print(f"{eval_env.env_method("log", indices=0)} Action: {np.squeeze(action)}")
+        #print(f"{eval_env.env_method("log", indices=0)} Action: {np.squeeze(action)}")
         obs, rewards, dones, info = eval_env.step(action)
         if dones.all():
             obs = eval_env.reset()
