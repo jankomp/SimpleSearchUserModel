@@ -1,2 +1,0 @@
-patience_penalty,cognitive_slowness,search_tree_depth,action_home,action_parent,action_left,action_right,action_stay,action_end,average_episode_length,average_final_node_value
-0.1,0,4,0.02557544757033248,0.03324808184143223,0.3836317135549872,0.26854219948849106,0.03324808184143223,0.2557544757033248,3.91,50.0

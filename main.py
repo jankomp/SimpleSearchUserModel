@@ -22,7 +22,7 @@ def test_configurations():
     if not os.path.exists("models"):
         os.makedirs("models")
 
-    patience_penalties = [0.1, 0.5, 1.0, 2.0]
+    patience_penalties = [0.0, 0.1, 0.5, 1.0, 2.0]
     cognitive_slownesses = [0, 1, 5, 10]
     search_tree_depths = [4, 8]
 
@@ -32,7 +32,7 @@ def test_configurations():
                 print(f"Testing configuration: patience_penalty={patience_penalty}, cognitive_slowness={cognitive_slowness}, tree_depth={search_tree_depth}")
                 env = make_vec_env(make_env(search_tree_depth=search_tree_depth, patience_penalty=patience_penalty, cognitive_slowness=cognitive_slowness) , n_envs=8, vec_env_cls=SubprocVecEnv)
                 model = PPO(CustomMLPPolicy, env, verbose=0, tensorboard_log="./ppo_simplesearch_tensorboard/")
-                model.learn(total_timesteps=100_000, tb_log_name=f"patience_{patience_penalty}_cognitive_{cognitive_slowness}_depth_{search_tree_depth}")
+                model.learn(total_timesteps=1_000_000, tb_log_name=f"patience_{patience_penalty}_cognitive_{cognitive_slowness}_depth_{search_tree_depth}")
                 
                 model_name = f"ppo_simple_search_pcd_{patience_penalty}_{cognitive_slowness}_{search_tree_depth}"
                 model.save(os.path.join("models", model_name))
@@ -53,17 +53,20 @@ def test_configurations():
                     obs = eval_env.reset()
                     episode_length = 0
                     done = False
+
+                    true_value = 0
                     while not done:
-                        action, _ = model.predict(obs)
-                        print(f"{eval_env.env_method("log", indices=0)} Action: {np.squeeze(action)}")
+                        action, _ = model.predict(obs, deterministic=True)
+                        #print(f"{eval_env.env_method("log", indices=0)} Action: {np.squeeze(action)}")
                         action_distribution[action] += 1
                         obs, rewards, dones, info  = eval_env.step(action)
                         done = dones[0]
                         episode_length += 1
-                        if done:
-                            print(f"Episode finished in {episode_length} steps")
-                            total_final_node_values.append(eval_env.env_method("get_current_node_value", indices=0))
-                            total_episode_lengths.append(episode_length)
+                        if not done:
+                            true_value = np.squeeze(eval_env.env_method("get_current_node_value", indices=0))
+
+                    total_final_node_values.append(true_value)
+                    total_episode_lengths.append(episode_length)
                 
                 # Save metrics for this configuration
                 results[(patience_penalty, cognitive_slowness, search_tree_depth)] = {
@@ -72,9 +75,6 @@ def test_configurations():
                     "average_final_node_value": np.mean(total_final_node_values),
                 }
                 print(f"Results for configuration: patience_penalty={patience_penalty}, cognitive_slowness={cognitive_slowness}, search_tree_depth={search_tree_depth}: {results[(patience_penalty, cognitive_slowness, search_tree_depth)]}")
-                break
-            break
-        break
 
     print("Evaluation Results:")
     for config, metrics in results.items():
