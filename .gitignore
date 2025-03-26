@@ -1,0 +1,4 @@
+__pycache__
+
+models/
+ppo_simplesearch_tensorboard/
