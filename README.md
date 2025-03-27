@@ -53,11 +53,14 @@ to run experiments in several settings. The output will be logged in _results.cs
 
 ## Initial results
 We trained 40 different configurations for 1_000_000 training steps each. We tried two different depths of the binary tree, four different patience values (reverse), and 5 different cognitive abilities (reverse).
+
 The evaluation was done on 100 episodes and the results were averaged. The tested variables were the distribution of the actions, the episode length, and the final return of the ultimately selected node.
 ![Image](https://github.com/user-attachments/assets/1e15e30a-864c-4177-997e-044c95d5bdb5)
 
 The results suggest that with lower cognitive ability the final return that the user achieves in the search task decreases and the time they take increases.
+
 With 0 penalty for patience the user does not learn to spend little time and interestingly enough the average rewards found with a small patience penalty are sometimes higher. And with patient penalties the agents learn to find competitive return values in less time. The only instance were it looks like the rl agent failed to find a meaningful policy is patience penalty 0, cognitive slowness 5, and tree-depth 8.
+
 If low cognitive ability is coupled with little patience, the worst performances are achieved.
 Slower cognitive abilty does not seem to have as much effect on the average time taken for the task as the patience has. However, it negatively affects the final return more.
 
@@ -66,6 +69,6 @@ Slower cognitive abilty does not seem to have as much effect on the average time
 In the future this repository should be expanded:
 1. from simple binary search to more complex search with multiple links per page and loops in the linkings
 2. nodes with actual content (e.g. wikipedia pages)
-3. search by keywords (LLM powered search)
+3. search by keywords (RL agent uses low-ressource local LLM)
 4. visual POMDP: search by navigation through web pages
 5. validation of user model through user study
