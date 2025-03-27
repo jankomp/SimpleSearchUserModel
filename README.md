@@ -44,7 +44,7 @@ python3 -m venv path/to/virtual/environment
 source path/to/virtual/environment/bin/activate
 pip install -r requirements.txt
 ```
-
+8reverse
 ### Run experiment
 Execute the command
 ```
@@ -53,8 +53,14 @@ python3 main.py
 to run experiments in several settings. The output will be logged in _results.csv_.
 
 ## Initial results
-The results suggest that with lower cognitive ability the final return that the user achieves in the search task decreases and the time they take increases. However, with less patience the user likes to spend less time on the search. Therefore, also the patience decreases the final return. If low cognitive ability is coupled with little patience, the worst performances are achieved.
-More patience can make up for lower cognitive ability, there is a trade-off between the two. E.g. a user A who shows twice as much patience as user B can perform better on average even if user B has 1.5 times faster perception (reading) speed.
+We trained 40 different configurations for 1_000_000 training steps each. We tried two different depths of the binary tree, four different patience values (reverse), and 5 different cognitive abilities (reverse).
+The evaluation was done on 100 episodes and the results were averaged. The tested variables were the distribution of the actions, the episode length, and the final return of the ultimately selected node.
+![result charts](https://github.com/jankomp/SimpleSearchUserModel/results_charts.png "Evaluation results for the simple search simulation")
+
+The results suggest that with lower cognitive ability the final return that the user achieves in the search task decreases and the time they take increases.
+With 0 penalty for patience the user does not learn to spend little time and interestingly enough the average rewards found with a small patience penalty are sometimes higher. And with patient penalties the agents learn to find competitive return values in less time. The only instance were it looks like the rl agent failed to find a meaningful policy is patience penalty 0, cognitive slowness 5, and tree-depth 8.
+If low cognitive ability is coupled with little patience, the worst performances are achieved.
+Slower cognitive abilty does not seem to have as much effect on the average time taken for the task as the patience has. However, it negatively affects the final return more.
 
 
 ## Future steps
