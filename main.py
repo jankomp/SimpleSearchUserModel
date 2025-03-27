@@ -25,6 +25,7 @@ def test_configurations():
     patience_penalties = [0.0, 0.1, 0.5, 1.0, 2.0]
     cognitive_slownesses = [0, 1, 5, 10]
     search_tree_depths = [4, 8]
+    results = {}
 
     for search_tree_depth in search_tree_depths:
         for patience_penalty in patience_penalties:
@@ -46,8 +47,6 @@ def test_configurations():
                 action_distribution = np.zeros(eval_env.action_space.n)
                 total_episode_lengths = []
                 total_final_node_values = []
-
-                results = {}
 
                 for _ in range(100):  # Evaluate for 100 episodes
                     obs = eval_env.reset()
@@ -98,7 +97,7 @@ def train_and_test():
     obs = eval_env.reset()
     for _ in range(1000):
         action, _states = model.predict(obs)
-        print(f"{eval_env.env_method("log", indices=0)} Action: {np.squeeze(action)}")
+        #print(f"{eval_env.env_method("log", indices=0)} Action: {np.squeeze(action)}")
         obs, rewards, dones, info = eval_env.step(action)
         if dones.all():
             obs = eval_env.reset()
